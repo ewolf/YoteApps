@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <title>Task Stack</title>
+    <script src="/yote/js/jquery-latest.js"></script>
+    <script src="/yote/js/jquery.dumper.js"></script>
+    <script src="/yote/js/jquery.cookie.js"></script>
+    <script src="/yote/js/jquery.base64.min.js"></script>
+    <script src="/yote/js/json2.js"></script>
+    <script src="/yote/js/yote.js"></script>
+    <script src="/yote/js/yote.util.js"></script>
+    <script>
+    $().ready(function(){
+	var stack_app = $.yote.fetch_app( 'Yote::Apps::Stack' );
+	$( '#stack_div' ).hide();
+	function refresh() {
+	    $( '#cur_task' ).empty().append( stack_app.current_task() );	    
+	}
+	$( '#add' ).click( function() {
+	    stack_app.add_task( $('#newtask').val() );
+	    refresh();
+	} );
+	$( '#complete' ).click( function() {
+	    stack_app.complete_current_task();
+	    refresh();
+	} );
+	$( '#shuffle' ).click( function() {
+	    stack_app.random_task();
+	    refresh();
+	} );
+	function show_stack() {
+	    $( '#stack_div' ).show();
+	}
+	$.yote.util.make_login_box( { 
+	    target:'#login_div',
+            on_login:show_stack,
+            on_register:show_stack,
+	});
+    });
+    </script>
+    <style>
+      .emp { font-family:"Lucida Console",monospace;  }
+    </style>
+  </head>
+  <body>
+    Task Stack
+    <div id=login_div></div>
+    <hr>
+    <div id=stack_div>
+    Current Task : <span id=cur_task></span><BR>
+    <button type=button id=shuffle>Shuffle</button> <BR><BR>
+    <button type=button id=complete>Complete</button> <BR><BR>
+    <hr>
+    <input type=text id=newtask>
+    <button type=button id=add>Add</button>
+    
+    </div>
+  </body>
+</html>
